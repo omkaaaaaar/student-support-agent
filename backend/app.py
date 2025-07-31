@@ -1,10 +1,15 @@
 import json
 import requests
 import os
+from flask import Flask, request, jsonify
+from flask_cors import CORS # Import CORS to handle cross-origin requests
+
+app = Flask(__name__)
+CORS(app) # Enable CORS for all routes
 
 # This function simulates the core logic of your AI Agent.
 # In a real application, this would be a backend endpoint that receives the user's question.
-def generate_agent_response(user_question: str) -> str:
+def generate_agent_response_logic(user_question: str) -> str:
     """
     Generates a response for the Student Support Agent using a large language model.
 
@@ -60,20 +65,23 @@ def generate_agent_response(user_question: str) -> str:
     }
 
     # In a real scenario, you would use a library like `requests` to make the call:
-    # try:
-    #     response = requests.post(api_url, headers=headers, data=json.dumps(payload))
-    #     response.raise_for_status() # Raise an HTTPError for bad responses (4xx or 5xx)
-    #     result = response.json()
-    #
-    #     if result.get("candidates") and result["candidates"][0].get("content") and \
-    #        result["candidates"][0]["content"].get("parts") and \
-    #        result["candidates"][0]["content"]["parts"][0].get("text"):
-    #         agent_response_text = result["candidates"][0]["content"]["parts"][0]["text"]
-    #     else:
-    #         agent_response_text = "I apologize, but I couldn't generate a response. Please try again."
-    # except requests.exceptions.RequestException as e:
-    #     print(f"API call failed: {e}")
-    #     agent_response_text = "I'm currently experiencing technical difficulties. Please try again later."
+    try:
+        # NOTE: For this assignment, the LLM call is simulated.
+        # If you have a valid GEMINI_API_KEY and want to enable actual LLM calls, uncomment the following:
+        # response = requests.post(api_url, headers=headers, data=json.dumps(payload))
+        # response.raise_for_status() # Raise an HTTPError for bad responses (4xx or 5xx)
+        # result = response.json()
+        #
+        # if result.get("candidates") and result["candidates"][0].get("content") and \
+        #    result["candidates"][0]["content"].get("parts") and \
+        #    result["candidates"][0]["content"]["parts"][0].get("text"):
+        #     agent_response_text = result["candidates"][0]["content"]["parts"][0]["text"]
+        # else:
+        #     agent_response_text = "I apologize, but I couldn't generate a response. Please try again."
+        pass # Placeholder for actual API call, currently using simulated response below
+    except requests.exceptions.RequestException as e:
+        print(f"API call failed: {e}")
+        return "I'm currently experiencing technical difficulties. Please try again later."
 
     # --- Placeholder for LLM response (as we are not executing a live API call here) ---
     # For the purpose of this assignment, we'll simulate the LLM's response based on keywords,
@@ -93,19 +101,18 @@ def generate_agent_response(user_question: str) -> str:
     print(f"Generated agent response: '{agent_response_text}'")
     return agent_response_text
 
-# Example of how you would use this function:
+@app.route('/api/generate_response', methods=['POST'])
+def generate_response_endpoint():
+    user_question = request.json.get('question')
+    if not user_question:
+        return jsonify({'error': 'No question provided'}), 400
+    
+    response = generate_agent_response_logic(user_question)
+    return jsonify({'answer': response})
+
 if __name__ == "__main__":
-    test_questions = [
-        "What is the course syllabus?",
-        "When are the live sessions?",
-        "How do I check my payment status?",
-        "When will I get my certificate?",
-        "I need to contact support.",
-        "Can you tell me about the homework?", # This will get the fallback message
-    ]
-
-    for question in test_questions:
-        print(f"\n--- Testing with question: '{question}' ---")
-        response = generate_agent_response(question)
-        print(f"Agent's Answer: {response}")
-
+    # To run the Flask server:
+    # 1. Ensure you have Flask and Flask-CORS installed: pip install Flask Flask-CORS
+    # 2. Run this script: python app.py
+    # This will start the server, typically on http://127.0.0.1:5000/
+    app.run(debug=True, port=5000)
