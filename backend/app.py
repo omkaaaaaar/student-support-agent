@@ -1,4 +1,3 @@
-# omkaaaaaar/student-support-agent/student-support-agent-2d56a55ed0ee20653db24666d91898d4734f10a6/backend/app.py
 import os
 import json
 from flask import Flask, request, jsonify
@@ -10,17 +9,16 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
 app = Flask(__name__)
-CORS(app) # Enable CORS for all routes
+CORS(app) 
 
-# --- Configure the LLM with Langchain ---
 try:
     # IMPORTANT: Directly assign your Gemini API key here.
     # Replace "YOUR_ACTUAL_GEMINI_API_KEY_HERE" with your real API key.
     # Be cautious with hardcoding API keys in production environments for security reasons.
-    gemini_api_key = "AIzaSyDflxVqGHpiBc2AANz7LI0ELCbStTjd_L4" # <-- REPLACE THIS PLACEHOLDER WITH YOUR KEY
+    gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # <-- REPLACE THIS PLACEHOLDER WITH YOUR KEY
     
     # This check ensures the API key is actually set and not the placeholder.
-    if not gemini_api_key or gemini_api_key == "YOUR_ACTUAL_GEMINI_API_KEY_HERE":
+    if not gemini_api_key or gemini_api_key == "YOUR_ACTUAL_GEMINI_API_KEY_HERE": # <-- DON'T REPLACE THIS!!! KEEP IT AS IT IS!!!!!!
         raise ValueError("GEMINI_API_KEY is not set. Please replace the placeholder with your actual key.")
 
     # Initialize the Gemini LLM model
