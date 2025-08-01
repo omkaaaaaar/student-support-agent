@@ -14,7 +14,6 @@ CORS(app)
 try:
     # IMPORTANT: Directly assign your Gemini API key here.
     # Replace "YOUR_ACTUAL_GEMINI_API_KEY_HERE" with your real API key.
-    # Be cautious with hardcoding API keys in production environments for security reasons.
     gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # <-- REPLACE THIS PLACEHOLDER WITH YOUR KEY
     
     # This check ensures the API key is actually set and not the placeholder.
@@ -24,7 +23,7 @@ try:
     # Initialize the Gemini LLM model
     llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=gemini_api_key)
     
-    # Define your prompt template using Langchain's ChatPromptTemplate
+    # Defining  prompt template using Langchain's ChatPromptTemplate
     prompt_template = ChatPromptTemplate.from_messages([
         ("system", """You are an AI-powered student support agent for an online course.
         Your goal is to answer student questions accurately and concisely.
@@ -45,7 +44,7 @@ try:
         ("human", "{user_question}")
     ])
 
-    # Create a Langchain chain to combine prompt, LLM, and output parser
+    # Creating a Langchain chain to combine prompt, LLM, and output parser
     chain = prompt_template | llm | StrOutputParser()
 
 except ValueError as e:
