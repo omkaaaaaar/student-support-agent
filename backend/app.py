@@ -17,14 +17,14 @@ try:
     # IMPORTANT: Directly assign your Gemini API key here.
     # Replace "YOUR_ACTUAL_GEMINI_API_KEY_HERE" with your real API key.
     # Be cautious with hardcoding API keys in production environments for security reasons.
-    gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # <-- **THIS IS LINE 20** - REPLACE THIS PLACEHOLDER
+    gemini_api_key = "AIzaSyDflxVqGHpiBc2AANz7LI0ELCbStTjd_L4" # <-- REPLACE THIS PLACEHOLDER WITH YOUR KEY
     
+    # This check ensures the API key is actually set and not the placeholder.
     if not gemini_api_key or gemini_api_key == "YOUR_ACTUAL_GEMINI_API_KEY_HERE":
-        # <-- **THIS IS LINE 22** - This check ensures the key is properly set
         raise ValueError("GEMINI_API_KEY is not set. Please replace the placeholder with your actual key.")
 
     # Initialize the Gemini LLM model
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=gemini_api_key)
+    llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", google_api_key=gemini_api_key)
     
     # Define your prompt template using Langchain's ChatPromptTemplate
     prompt_template = ChatPromptTemplate.from_messages([
@@ -41,7 +41,7 @@ try:
         - Course timing/schedule (e.g., Live sessions are Mon/Wed at 5 PM PST. Recordings available in 24 hours.)
         - Syllabus details (e.g., Found in 'Course Materials', covers Intro to AI, ML Basics, Deep Learning.)
         - Payment information (e.g., View status in 'Billing', contact finance@scoreazy.com or +1-800-555-0199 for issues.)
-        - Certificate issuance (e.g., Issued within 2 weeks of completion if assignments/fees are cleared. Email notification for download.)
+        - Certificate issuance (e.g., Issued within 2 weeks of course completion if assignments/fees are cleared. Email notification for download.)
         
         Provide helpful and direct answers based on the course context."""),
         ("human", "{user_question}")
