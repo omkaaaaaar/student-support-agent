@@ -3,30 +3,27 @@ import os
 import json
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-from dotenv import load_dotenv # For loading API key from .env file
 
 # Import Langchain components
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 
-# Load environment variables (this will load GEMINI_API_KEY from a .env file if present)
-load_dotenv()
-
 app = Flask(__name__)
 CORS(app) # Enable CORS for all routes
 
 # --- Configure the LLM with Langchain ---
 try:
-    # Get the API key from environment variables
-    # For local development, create a .env file in your 'backend' directory with:
-    # GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE"
-    gemini_api_key = os.getenv("GEMINI_API_KEY")
-    if not gemini_api_key:
-        raise ValueError("GEMINI_API_KEY not found in environment variables. Please set it.")
+    # IMPORTANT: Directly assign your Gemini API key here.
+    # Replace "YOUR_ACTUAL_GEMINI_API_KEY_HERE" with your real API key.
+    # Be cautious with hardcoding API keys in production environments for security reasons.
+    gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # CORRECTED LINE: Ensure your key is within quotes and assigned with '='
+    
+    if not gemini_api_key or gemini_api_key == "YOUR_ACTUAL_GEMINI_API_KEY_HERE":
+        raise ValueError("GEMINI_API_KEY is not set. Please replace the placeholder with your actual key.")
 
     # Initialize the Gemini LLM model
-    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=gemini_api_key) # You can use "gemini-1.5-flash" or "gemini-pro"
+    llm = ChatGoogleGenerativeAI(model="gemini-pro", google_api_key=gemini_api_key)
     
     # Define your prompt template using Langchain's ChatPromptTemplate
     prompt_template = ChatPromptTemplate.from_messages([
@@ -86,8 +83,8 @@ def generate_response_endpoint():
 
 if __name__ == "__main__":
     # To run the Flask server:
-    # 1. Ensure you have Flask, Flask-CORS, langchain-google-genai, google-generativeai, and python-dotenv installed.
-    # 2. Set your GEMINI_API_KEY in your environment variables or a .env file in this directory.
+    # 1. Ensure you have Flask, Flask-CORS, langchain-google-genai, google-generativeai installed.
+    # 2. Set your GEMINI_API_KEY directly in this file as shown above.
     # 3. Run this script: python app.py
     # This will start the server, typically on http://127.0.0.1:5000/
     app.run(debug=True, port=5000)
