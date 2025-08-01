@@ -17,9 +17,10 @@ try:
     # IMPORTANT: Directly assign your Gemini API key here.
     # Replace "YOUR_ACTUAL_GEMINI_API_KEY_HERE" with your real API key.
     # Be cautious with hardcoding API keys in production environments for security reasons.
-    gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # CORRECTED LINE: Ensure your key is within quotes and assigned with '='
+    gemini_api_key = "YOUR_ACTUAL_GEMINI_API_KEY_HERE" # <-- **THIS IS LINE 20** - REPLACE THIS PLACEHOLDER
     
     if not gemini_api_key or gemini_api_key == "YOUR_ACTUAL_GEMINI_API_KEY_HERE":
+        # <-- **THIS IS LINE 22** - This check ensures the key is properly set
         raise ValueError("GEMINI_API_KEY is not set. Please replace the placeholder with your actual key.")
 
     # Initialize the Gemini LLM model
